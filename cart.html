@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Online Cart </title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<h1 style="text-align: center"> Shopping Cart # 2 </h1>
+	<h3 id="cart_main" style="text-align: center"> 
+		Result :
+		<p id="cart_list"> </p> 
+	</h3>
+</body>
+
+
+<script type="text/javascript">
+	// init obj
+	const cart 			= new Object();
+	// addProduct function
+	cart.addProduct = function(product,quantity) {
+		if(sessionStorage.length == 0) {
+			sessionStorage.setItem(product, quantity);
+		} else {
+			var flag_update = [];
+			for (var i = 0; i < sessionStorage.length; i++){
+				if(sessionStorage.key(i) != product) {
+					flag_update.push(1);
+				} else {
+					new_quantity = quantity + parseInt(sessionStorage.getItem(sessionStorage.key(i)));
+					sessionStorage.setItem(product,new_quantity);
+					flag_update.push(0);
+				}
+			}
+			if(flag_update.indexOf(1) != -1 && flag_update.indexOf(0) == -1) {
+				sessionStorage.setItem(product,quantity);
+			}
+		}
+	};
+	// removeProduct
+	cart.removeProduct = function(product) {
+		sessionStorage.removeItem(product);
+	};
+	// showCart
+	cart.showCart = function() {
+		for (var i = 0; i < sessionStorage.length; i++){
+			console.log(sessionStorage.key(i) + " ("+ sessionStorage.getItem(sessionStorage.key(i)) + ")");
+			$("#cart_list").append("<p>"+sessionStorage.key(i) + " ("+ sessionStorage.getItem(sessionStorage.key(i)) + ")"+"</p>");
+		}
+		console.log(sessionStorage);
+		sessionStorage.clear();
+	};
+
+	cart.addProduct("Baju Merah Mantap", 1);
+	cart.addProduct("Baju Merah Mantap", 1);
+	cart.addProduct("Bukuku", 3);
+	cart.removeProduct("Bukuku");
+	cart.addProduct("Singlet Hijau", 1);
+	cart.removeProduct("ProdukBohongan");
+	cart.showCart();
+	
+</script>
+</html>
